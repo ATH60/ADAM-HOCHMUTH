@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ADAM HOCHMUTH</title>
   
+  <!-- Import Inter (300 Light jako záložní font pro systémy bez Helvetica Neue + 700 Bold pro logo) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
 
   <!-- Knihovna SheetJS pro přímé čtení souboru database.xlsx -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -18,11 +19,12 @@
       --text-color: #111111;
       --muted-text: #737373;
       --border-color: #111111;
+      --border-width: 0.5px;
       --hover-accent: rgb(149, 0, 0);
       --drawer-width: 40vw;
       --header-height: 58px;
       --table-header-height: 24px;
-      --mono-font: 'Simplon Mono', 'SimplonMono', 'IBM Plex Mono', monospace;
+      --body-font: 'Helvetica Neue', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --logo-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
@@ -33,15 +35,16 @@
     }
 
     body {
-      font-family: var(--mono-font);
+      font-family: var(--body-font);
       background-color: var(--bg-color);
       color: var(--text-color);
-      font-size: 11px;
+      font-size: 11.5px;
       line-height: 1.35;
-      font-weight: 400;
-      letter-spacing: 0.02em;
+      font-weight: 300;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
     }
 
@@ -70,7 +73,8 @@
     }
 
     .maintenance-info {
-      font-size: 11px;
+      font-size: 11.5px;
+      font-weight: 300;
       line-height: 1.6;
     }
 
@@ -86,13 +90,13 @@
 
     header {
       height: var(--header-height);
-      border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 24px;
     }
 
+    /* Nadpis zůstává v původním písmu Inter Bold */
     .logo {
       font-family: var(--logo-font);
       font-weight: 700;
@@ -110,10 +114,10 @@
     .nav-btn {
       background: none;
       border: none;
-      font-family: var(--mono-font);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.02em;
+      font-family: var(--body-font);
+      font-size: 11.5px;
+      font-weight: 300;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
       color: var(--text-color);
       cursor: pointer;
@@ -135,10 +139,10 @@
       height: var(--table-header-height);
       padding: 0 24px;
       align-items: center;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: var(--border-width) solid var(--border-color);
       color: var(--text-color);
       font-size: 10px;
-      font-weight: 500;
+      font-weight: 400;
     }
 
     /* --- HLAVNÍ SEZNAM (INDEX VIEW) --- */
@@ -148,7 +152,7 @@
     }
 
     .project-block {
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: var(--border-width) solid var(--border-color);
     }
 
     /* --- VODOROVNÝ PÁS OBRÁZKŮ (CAROUSEL) --- */
@@ -189,6 +193,7 @@
 
     .project-row.is-active .col-title {
       text-decoration: underline;
+      text-underline-thickness: 0.5px;
       text-underline-offset: 3px;
     }
 
@@ -199,7 +204,7 @@
     }
 
     .col-title {
-      font-weight: 500;
+      font-weight: 400;
       padding-right: 16px;
     }
 
@@ -238,7 +243,8 @@
       width: var(--drawer-width);
       height: calc(100vh - var(--header-height));
       background-color: var(--bg-color);
-      border-left: 1px solid var(--border-color);
+      border-top: var(--border-width) solid var(--border-color);
+      border-left: var(--border-width) solid var(--border-color);
       transform: translateX(100%);
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 200;
@@ -263,26 +269,28 @@
       align-items: flex-start;
       margin-bottom: 20px;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: var(--border-width) solid var(--border-color);
     }
 
     .drawer-subtitle {
       font-size: 10px;
+      font-weight: 300;
       color: var(--muted-text);
       margin-bottom: 2px;
     }
 
     .drawer-title {
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 500;
       line-height: 1.3;
     }
 
     .close-btn {
       background: none;
       border: none;
-      font-family: var(--mono-font);
+      font-family: var(--body-font);
       font-size: 18px;
+      font-weight: 300;
       line-height: 1;
       cursor: pointer;
       color: var(--text-color);
@@ -299,7 +307,8 @@
       grid-template-columns: 88px 1fr;
       row-gap: 4px;
       margin-bottom: 20px;
-      font-size: 11px;
+      font-size: 11.5px;
+      font-weight: 300;
     }
 
     .meta-label {
@@ -307,7 +316,8 @@
     }
 
     .drawer-description {
-      font-size: 11px;
+      font-size: 11.5px;
+      font-weight: 300;
       line-height: 1.5;
       color: var(--text-color);
       margin-bottom: 24px;
@@ -353,7 +363,8 @@
     .status-message {
       padding: 24px;
       color: var(--muted-text);
-      font-size: 11px;
+      font-size: 11.5px;
+      font-weight: 300;
       line-height: 1.6;
     }
 
@@ -496,7 +507,6 @@
       if (MAINTENANCE_MODE) return;
 
       try {
-        // Přidání časového razítka zabrání prohlížeči držet starou verzi Excelu v mezipaměti
         const response = await fetch(`${EXCEL_FILE}?v=${Date.now()}`);
         if (!response.ok) {
           throw new Error(`Soubor ${EXCEL_FILE} nebyl nalezen (HTTP ${response.status}).`);
