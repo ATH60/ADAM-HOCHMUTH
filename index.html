@@ -21,7 +21,7 @@
       --border-color: #111111;
       --border-width: 0.5px;
       --hover-accent: rgb(149, 0, 0);
-      --drawer-width: 40vw;
+      --drawer-width: 60vw;
       --header-height: 58px;
       --table-header-height: 24px;
       --body-font: 'Helvetica Neue', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -141,7 +141,7 @@
       align-items: center;
       border-bottom: var(--border-width) solid var(--border-color);
       color: var(--text-color);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 400;
     }
 
@@ -153,28 +153,6 @@
 
     .project-block {
       border-bottom: var(--border-width) solid var(--border-color);
-    }
-
-    /* --- VODOROVNÝ PÁS OBRÁZKŮ (CAROUSEL) --- */
-    .project-carousel {
-      display: flex;
-      gap: 8px;
-      padding: 12px 24px 6px 24px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .project-carousel::-webkit-scrollbar {
-      display: none;
-    }
-
-    .project-carousel img {
-      height: 178px;
-      width: auto;
-      object-fit: cover;
-      display: block;
-      cursor: pointer;
-      background-color: #f4f4f4;
     }
 
     /* --- ŘÁDEK S INFORMACEMI O PROJEKTU --- */
@@ -191,10 +169,16 @@
       color: var(--hover-accent);
     }
 
+    /* Aktivní (rozkliknutý) projekt bez podtržení, v červené a tučně */
+    .project-row.is-active,
+    .project-row.is-active .col-num,
+    .project-row.is-active .col-type {
+      color: var(--hover-accent);
+    }
+
     .project-row.is-active .col-title {
-      text-decoration: underline;
-      text-underline-thickness: 0.5px;
-      text-underline-offset: 3px;
+      font-weight: 700;
+      text-decoration: none;
     }
 
     .col-num {
@@ -215,6 +199,28 @@
 
     .col-year {
       padding-right: 32px;
+    }
+
+    /* --- VODOROVNÝ PÁS OBRÁZKŮ (CAROUSEL) POD ŘÁDKEM PROJEKTU --- */
+    .project-carousel {
+      display: flex;
+      gap: 8px;
+      padding: 4px 24px 12px 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .project-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .project-carousel img {
+      height: 178px;
+      width: auto;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+      background-color: #f4f4f4;
     }
 
     /* --- VÝSUVNÉ BOČNÍ PANELY --- */
@@ -273,7 +279,7 @@
     }
 
     .drawer-subtitle {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 300;
       color: var(--muted-text);
       margin-bottom: 2px;
@@ -566,6 +572,24 @@
         const block = document.createElement('div');
         block.className = 'project-block';
 
+        // 1. Řádek s údaji projektu
+        const row = document.createElement('div');
+        row.className = 'project-row grid-cols';
+        row.id = `row-${index}`;
+        row.onclick = () => openProjectDrawer(index);
+
+        row.innerHTML = `
+          <div class="col-num">${project.number}</div>
+          <div class="col-title">${project.title}</div>
+          <div class="col-typology">${project.typology}</div>
+          <div class="col-loc">${project.location}</div>
+          <div class="col-year">${project.year}</div>
+          <div class="col-type">${project.type}</div>
+        `;
+
+        block.appendChild(row);
+
+        // 2. Vodorovný pás obrázků pod řádkem projektu
         if (project.showCarousel && project.images.length > 0) {
           const carousel = document.createElement('div');
           carousel.className = 'project-carousel';
@@ -585,21 +609,6 @@
           block.appendChild(carousel);
         }
 
-        const row = document.createElement('div');
-        row.className = 'project-row grid-cols';
-        row.id = `row-${index}`;
-        row.onclick = () => openProjectDrawer(index);
-
-        row.innerHTML = `
-          <div class="col-num">${project.number}</div>
-          <div class="col-title">${project.title}</div>
-          <div class="col-typology">${project.typology}</div>
-          <div class="col-loc">${project.location}</div>
-          <div class="col-year">${project.year}</div>
-          <div class="col-type">${project.type}</div>
-        `;
-
-        block.appendChild(row);
         container.appendChild(block);
       });
     }
