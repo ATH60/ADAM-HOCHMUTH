@@ -81,7 +81,7 @@
       line-height: 1.6;
     }
 
-    /* --- FIXNÍ PRŮHLEDNÉ LOGO VLEVÉM HORNÍM ROHU --- */
+    /* --- FIXNÍ LIŠTA S LOGEM (PRŮHLEDNÁ NA KOLÁŽI, BÍLÁ NA INDEXU) --- */
     .fixed-logo-bar {
       position: fixed;
       top: 0;
@@ -91,9 +91,15 @@
       padding: 0 24px;
       display: flex;
       align-items: center;
-      background: transparent;
-      pointer-events: none; /* Propouští kliknutí na koláž pod prázdnou plochou */
+      background-color: transparent;
+      pointer-events: none;
+      transition: background-color 0.2s ease;
       z-index: 250;
+    }
+
+    .fixed-logo-bar.has-bg {
+      background-color: rgba(255, 255, 255, 0.98);
+      pointer-events: auto;
     }
 
     .logo {
@@ -123,6 +129,7 @@
     }
 
     .circle-action-btn {
+      position: relative;
       width: 56px;
       height: 56px;
       border-radius: 50%;
@@ -135,11 +142,10 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      line-height: 1.2;
+      line-height: 1;
       cursor: pointer;
       transition: background-color 0.15s ease, transform 0.15s ease;
     }
@@ -147,6 +153,16 @@
     .circle-action-btn:hover,
     .circle-action-btn.is-active {
       background-color: var(--hover-accent);
+    }
+
+    /* Šipka umístěná nad textem tak, aby samotné slovo INDEX / ÚVOD sedělo přesně na středu jako KONTAKT */
+    .btn-arrow-top {
+      position: absolute;
+      top: 11px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8.5px;
+      line-height: 1;
     }
 
     /* =====================================================================
@@ -194,49 +210,49 @@
     }
 
     /* Přesné souřadnice prvků 1–7 pro Desktop (Landscape 16:9) */
-    .collage-slot-1 { /* Spolkový dům - čtverec vlevo nahoře */
+    .collage-slot-1 {
       left: 11.8%;
       top: 9%;
       width: 21.7%;
       z-index: 4;
     }
 
-    .collage-slot-2 { /* Půdorys - vlevo dole */
+    .collage-slot-2 {
       left: 6.2%;
       top: 50.5%;
       width: 12.6%;
       z-index: 2;
     }
 
-    .collage-slot-3 { /* Svislý řez - střed vlevo */
+    .collage-slot-3 {
       left: 21%;
       top: 39%;
       width: 22.2%;
       z-index: 1;
     }
 
-    .collage-slot-4 { /* Bytové domy - střed nahoře */
+    .collage-slot-4 {
       left: 41.1%;
       top: 17.5%;
       width: 21.9%;
       z-index: 3;
     }
 
-    .collage-slot-5 { /* Cihlový dům - vpravo nahoře */
+    .collage-slot-5 {
       left: 65.4%;
       top: 9.8%;
       width: 18.6%;
       z-index: 3;
     }
 
-    .collage-slot-6 { /* Pohled na fasádu - vpravo uprostřed */
+    .collage-slot-6 {
       left: 66.8%;
       top: 38.5%;
       width: 22.8%;
       z-index: 5;
     }
 
-    .collage-slot-7 { /* Tmavá galerie - široký pás dole uprostřed */
+    .collage-slot-7 {
       left: 37.8%;
       top: 58.2%;
       width: 38.6%;
@@ -265,7 +281,7 @@
       height: var(--table-header-height);
       padding: 0 24px;
       align-items: center;
-      background-color: rgba(255, 255, 255, 0.97);
+      background-color: rgba(255, 255, 255, 0.98);
       border-bottom: var(--border-width) solid var(--border-color);
       color: var(--text-color);
       font-size: 8px;
@@ -323,10 +339,10 @@
       padding-right: 32px;
     }
 
-    /* --- ROZBALOVACÍ AKORDEON POD ŘÁDKEM PROJEKTU --- */
+    /* --- ROZBALOVACÍ AKORDEON ZAROVNANÝ S PRVNÍM SLOUPCEM (24px) --- */
     .project-accordion {
       display: none;
-      padding: 12px 24px 22px 76px; /* 24px okraj + 52px sloupec Č. => zarovnáno přesně pod název projektu */
+      padding: 12px 24px 22px 24px;
     }
 
     .project-block.is-open .project-accordion {
@@ -384,7 +400,7 @@
       opacity: 0.9;
     }
 
-    /* --- VÝSUVNÝ PANEL KONTAKT --- */
+    /* --- VÝSUVNÝ PANEL KONTAKT (KONČÍ CCA 2 CM NAD TLAČÍTKY) --- */
     .drawer-backdrop {
       position: fixed;
       inset: 0;
@@ -406,17 +422,20 @@
       right: 0;
       width: 10cm;
       max-width: 90vw;
-      height: calc(100vh - var(--logo-bar-height));
+      /* 24px (spodní okraj) + 56px (výška tlačítka) + 2cm (odsazení nad tlačítkem) */
+      height: calc(100vh - var(--logo-bar-height) - 80px - 2cm);
+      max-height: 620px;
       background-color: var(--bg-color);
       border-top: var(--border-width) solid var(--border-color);
       border-left: var(--border-width) solid var(--border-color);
+      border-bottom: var(--border-width) solid var(--border-color);
       transform: translateX(100%);
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 240;
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      padding-bottom: 100px;
+      padding-bottom: 24px;
     }
 
     .contact-drawer.open {
@@ -514,7 +533,17 @@
         font-size: 8px;
       }
 
-      /* Přepnutí koláže na novou vertikální (Portrait) kompozici podle návrhu */
+      .btn-arrow-top {
+        top: 9px;
+        font-size: 8px;
+      }
+
+      /* Menší spodní odsazení karty Kontakt nad tlačítky na mobilu (cca 1.2cm) */
+      .contact-drawer {
+        height: calc(100vh - var(--logo-bar-height) - 66px - 1.2cm);
+      }
+
+      /* Přepnutí koláže na novou vertikální (Portrait) kompozici */
       .collage-section {
         padding: calc(var(--logo-bar-height) + 8px) 16px 24px 16px;
         align-items: flex-start;
@@ -527,49 +556,49 @@
         margin: 0 auto;
       }
 
-      .collage-slot-1 { /* Spolkový dům - vpravo nahoře */
+      .collage-slot-1 {
         left: 38.5%;
         top: 1%;
         width: 45.8%;
         z-index: 4;
       }
 
-      .collage-slot-2 { /* Půdorys - vpravo pod spolkovým domem */
+      .collage-slot-2 {
         left: 62%;
         top: 23.5%;
         width: 27%;
         z-index: 2;
       }
 
-      .collage-slot-3 { /* Svislý řez - velký prvek vlevo nahoře/střed */
+      .collage-slot-3 {
         left: 4.5%;
         top: 10.5%;
         width: 48%;
         z-index: 1;
       }
 
-      .collage-slot-4 { /* Bytové domy - střed vlevo */
+      .collage-slot-4 {
         left: 6.5%;
         top: 50.8%;
         width: 45.8%;
         z-index: 4;
       }
 
-      .collage-slot-5 { /* Cihlový dům - střed vpravo */
+      .collage-slot-5 {
         left: 48.2%;
         top: 39.2%;
         width: 39.2%;
         z-index: 3;
       }
 
-      .collage-slot-6 { /* Pohled na fasádu - vpravo dole */
+      .collage-slot-6 {
         left: 41.5%;
         top: 59.5%;
         width: 47.5%;
         z-index: 3;
       }
 
-      .collage-slot-7 { /* Tmavá galerie - široký pás úplně dole */
+      .collage-slot-7 {
         left: 9.2%;
         top: 76.2%;
         width: 80.2%;
@@ -584,10 +613,6 @@
       .col-typology,
       .col-type {
         display: none;
-      }
-
-      .project-accordion {
-        padding: 10px 24px 18px 24px;
       }
 
       .accordion-info {
@@ -612,15 +637,19 @@
     </div>
   </div>
 
-  <!-- FIXNÍ PRŮHLEDNÁ LIŠTA S LOGEM -->
-  <div class="fixed-logo-bar">
+  <!-- FIXNÍ LIŠTA S LOGEM (PRŮHLEDNÁ NA KOLÁŽI, BÍLÁ NA INDEXU) -->
+  <div class="fixed-logo-bar" id="fixed-logo-bar">
     <div class="logo" onclick="scrollToTop()">ADAM HOCHMUTH</div>
   </div>
 
   <!-- PLOVOUCÍ KRUHOVÁ TLAČÍTKA VPRAVO DOLE -->
   <div class="floating-controls">
-    <button class="circle-action-btn" id="scroll-toggle-btn" onclick="handleScrollToggle()">INDEX<br>&darr;</button>
-    <button class="circle-action-btn" id="contact-btn" onclick="toggleContactDrawer()">KONTAKT</button>
+    <button class="circle-action-btn" id="scroll-toggle-btn" onclick="handleScrollToggle()">
+      <span class="btn-arrow-top">&darr;</span><span>INDEX</span>
+    </button>
+    <button class="circle-action-btn" id="contact-btn" onclick="toggleContactDrawer()">
+      <span>KONTAKT</span>
+    </button>
   </div>
 
   <!-- 1. ÚVODNÍ KOLÁŽ PROJEKTŮ -->
@@ -764,6 +793,7 @@
 
         renderCollage();
         renderProjects();
+        handleScrollState();
 
       } catch (error) {
         console.error('Chyba při načítání databáze:', error);
@@ -874,7 +904,6 @@
 
       const isAlreadyOpen = targetBlock.classList.contains('is-open');
 
-      // Zavře ostatní otevřené projekty (pro čistý seznam vždy jeden aktivní)
       document.querySelectorAll('.project-block.is-open').forEach(b => {
         if (b !== targetBlock) b.classList.remove('is-open');
       });
@@ -896,20 +925,32 @@
       }
     }
 
-    /* --- PLOVOUCÍ TLAČÍTKO INDEX / NAHORU --- */
+    /* --- PLOVOUCÍ TLAČÍTKO INDEX / ÚVOD + BÍLÉ POZADÍ POD LOGEM --- */
     const scrollToggleBtn = document.getElementById('scroll-toggle-btn');
     const indexSection = document.getElementById('index-section');
+    const fixedLogoBar = document.getElementById('fixed-logo-bar');
 
-    function updateScrollButton() {
+    function handleScrollState() {
       const indexTop = indexSection.getBoundingClientRect().top;
-      if (indexTop <= window.innerHeight * 0.45) {
-        scrollToggleBtn.innerHTML = 'ÚVOD<br>&uarr;';
+      const logoHeight = fixedLogoBar.offsetHeight;
+
+      // Jakmile se index přiblíží pod lištu s logem, zapne se bílé pozadí pod logem
+      if (indexTop <= logoHeight + 10) {
+        fixedLogoBar.classList.add('has-bg');
       } else {
-        scrollToggleBtn.innerHTML = 'INDEX<br>&darr;';
+        fixedLogoBar.classList.remove('has-bg');
+      }
+
+      // Přepnutí tlačítka INDEX / ÚVOD
+      if (indexTop <= window.innerHeight * 0.45) {
+        scrollToggleBtn.innerHTML = '<span class="btn-arrow-top">&uarr;</span><span>ÚVOD</span>';
+      } else {
+        scrollToggleBtn.innerHTML = '<span class="btn-arrow-top">&darr;</span><span>INDEX</span>';
       }
     }
 
-    window.addEventListener('scroll', updateScrollButton, { passive: true });
+    window.addEventListener('scroll', handleScrollState, { passive: true });
+    window.addEventListener('resize', handleScrollState, { passive: true });
 
     function handleScrollToggle() {
       closeContactDrawer();
