@@ -155,7 +155,6 @@
       background-color: var(--hover-accent);
     }
 
-    /* Šipka umístěná nad textem tak, aby samotné slovo INDEX / ÚVOD sedělo přesně na středu jako KONTAKT */
     .btn-arrow-top {
       position: absolute;
       top: 11px;
@@ -422,7 +421,6 @@
       right: 0;
       width: 10cm;
       max-width: 90vw;
-      /* 24px (spodní okraj) + 56px (výška tlačítka) + 2cm (odsazení nad tlačítkem) */
       height: calc(100vh - var(--logo-bar-height) - 80px - 2cm);
       max-height: 620px;
       background-color: var(--bg-color);
@@ -538,12 +536,10 @@
         font-size: 8px;
       }
 
-      /* Menší spodní odsazení karty Kontakt nad tlačítky na mobilu (cca 1.2cm) */
       .contact-drawer {
         height: calc(100vh - var(--logo-bar-height) - 66px - 1.2cm);
       }
 
-      /* Přepnutí koláže na novou vertikální (Portrait) kompozici */
       .collage-section {
         padding: calc(var(--logo-bar-height) + 8px) 16px 24px 16px;
         align-items: flex-start;
@@ -605,7 +601,6 @@
         z-index: 5;
       }
 
-      /* Úprava sloupců seznamu na mobilu */
       .grid-cols {
         grid-template-columns: 38px 1.8fr 1fr 46px;
       }
@@ -772,10 +767,16 @@
                   .map(formatImgPath)
               : [];
 
-            const rawCollageImg = getCol(row, ['kolaz_obrazek', 'koláž_obrázek', 'kolaz_obr']);
-            const collageImage = rawCollageImg
-              ? formatImgPath(rawCollageImg)
-              : (imageList[0] || '');
+            // Podpora více slotů a více obrázků pro jeden projekt (oddělených čárkou)
+            const rawCollageSlots = getCol(row, ['kolaz', 'koláž']);
+            const collageSlots = rawCollageSlots
+              ? rawCollageSlots.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n))
+              : [];
+
+            const rawCollageImgs = getCol(row, ['kolaz_obrazek', 'koláž_obrázek', 'kolaz_obr']);
+            const collageImages = rawCollageImgs
+              ? rawCollageImgs.split(',').map(s => s.trim()).filter(s => s !== '').map(formatImgPath)
+              : [];
 
             return {
               number: getCol(row, ['č.', 'c.', 'cislo', 'číslo']),
@@ -786,8 +787,8 @@
               type: getCol(row, ['typ']),
               images: imageList,
               description: getCol(row, ['popis']),
-              collageSlot: getCol(row, ['kolaz', 'koláž']),
-              collageImage: collageImage
+              collageSlots: collageSlots,
+              collageImages: collageImages
             };
           });
 
@@ -805,25 +806,27 @@
       }
     }
 
-    /* --- VYKRESLENÍ ÚVODNÍ KOLÁŽE (SLOTY 1–7) --- */
+    /* --- VYKRESLENÍ ÚVODNÍ KOLÁŽE (SLOTY 1–7, VÍCE OBRÁZKŮ NA PROJEKT) --- */
     function renderCollage() {
       collageCanvas.innerHTML = '';
 
-      activeProjects.forEach((project, index) => {
-        const slot = parseInt(project.collageSlot, 10);
-        if (slot >= 1 && slot <= 7 && project.collageImage) {
-          const item = document.createElement('div');
-          item.className = `collage-item collage-slot-${slot}`;
-          item.title = `${project.number ? project.number + ' ' : ''}${project.title}`;
+      activeProjects.forEach((project, projectIndex) => {
+        project.collageSlots.forEach((slot, slotIdx) => {
+          const imgUrl = project.collageImages[slotIdx] || project.collageImages[0] || project.images[0] || '';
+          if (slot >= 1 && slot <= 7 && imgUrl) {
+            const item = document.createElement('div');
+            item.className = `collage-item collage-slot-${slot}`;
+            item.title = `${project.number ? project.number + ' ' : ''}${project.title}`;
 
-          const img = document.createElement('img');
-          img.src = project.collageImage;
-          img.alt = project.title;
+            const img = document.createElement('img');
+            img.src = imgUrl;
+            img.alt = project.title;
 
-          item.onclick = () => jumpToProject(index);
-          item.appendChild(img);
-          collageCanvas.appendChild(item);
-        }
+            item.onclick = () => jumpToProject(projectIndex);
+            item.appendChild(img);
+            collageCanvas.appendChild(item);
+          }
+        });
       });
     }
 
@@ -836,7 +839,6 @@
         block.className = 'project-block';
         block.id = `project-block-${index}`;
 
-        // 1. Základní řádek projektu
         const row = document.createElement('div');
         row.className = 'project-row grid-cols';
         row.onclick = () => toggleAccordion(index);
@@ -851,7 +853,6 @@
         `;
         block.appendChild(row);
 
-        // 2. Rozbalovací obsah pod řádkem (akordeon)
         const accordion = document.createElement('div');
         accordion.className = 'project-accordion';
 
@@ -934,14 +935,12 @@
       const indexTop = indexSection.getBoundingClientRect().top;
       const logoHeight = fixedLogoBar.offsetHeight;
 
-      // Jakmile se index přiblíží pod lištu s logem, zapne se bílé pozadí pod logem
       if (indexTop <= logoHeight + 10) {
         fixedLogoBar.classList.add('has-bg');
       } else {
         fixedLogoBar.classList.remove('has-bg');
       }
 
-      // Přepnutí tlačítka INDEX / ÚVOD
       if (indexTop <= window.innerHeight * 0.45) {
         scrollToggleBtn.innerHTML = '<span class="btn-arrow-top">&uarr;</span><span>ÚVOD</span>';
       } else {
