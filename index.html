@@ -185,7 +185,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: calc(var(--logo-bar-height) + 10px) 24px 36px 24px;
+      /* Posun celé kompozice o cca 1cm nahoru + extra bílé místo dole (výška cca 2 řádků listu) */
+      padding: calc(var(--logo-bar-height) - 10px) 24px 72px 24px;
       background-color: var(--bg-color);
     }
 
@@ -195,6 +196,7 @@
       max-width: 1280px;
       aspect-ratio: 16 / 9;
       max-height: calc(100vh - var(--logo-bar-height) - 46px);
+      transform: translateY(-0.8cm);
     }
 
     .collage-item {
@@ -228,16 +230,18 @@
       z-index: 4;
     }
 
+    /* Půdorys posunutý nahoru, aby byl shora cca z 20 % překrytý vizualizací (slot 1) */
     .collage-slot-2 {
       left: 6.2%;
-      top: 50.5%;
+      top: 42.5%;
       width: 12.6%;
       z-index: 2;
     }
 
+    /* Svislý řez posunutý o cca 1,5 cm nahoru */
     .collage-slot-3 {
       left: 20.5%;
-      top: 37.5%;
+      top: 29.5%;
       width: 23.8%;
       z-index: 1;
     }
@@ -276,7 +280,8 @@
     .index-section {
       position: relative;
       background-color: var(--bg-color);
-      padding-bottom: 140px;
+      /* Pod listovým zobrazením zůstane pouze cca 0,5 řádku bílého místa */
+      padding-bottom: 14px;
     }
 
     /* Společná mřížka sloupců: Č. | Projekt | Typologie | Lokalita | Rok | Typ */
@@ -472,11 +477,22 @@
 
     .drawer-meta {
       display: grid;
-      grid-template-columns: 88px 1fr;
-      row-gap: 4px;
+      grid-template-columns: 122px 1fr;
+      row-gap: 6px;
+      column-gap: 12px;
       margin-bottom: 20px;
       font-size: 10px;
       font-weight: 300;
+    }
+
+    .drawer-meta a {
+      color: var(--text-color);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .drawer-meta a:hover {
+      color: var(--hover-accent);
     }
 
     .drawer-description {
@@ -484,8 +500,7 @@
       font-weight: 300;
       line-height: 1.5;
       color: var(--text-color);
-      margin-bottom: 24px;
-      white-space: pre-line;
+      margin-bottom: 20px;
     }
 
     /* --- ZVĚTŠENÍ FOTKY (LIGHTBOX) --- */
@@ -553,7 +568,7 @@
       }
 
       .collage-section {
-        padding: calc(var(--logo-bar-height) + 8px) 16px 24px 16px;
+        padding: calc(var(--logo-bar-height) + 4px) 16px 56px 16px;
         align-items: flex-start;
       }
 
@@ -562,6 +577,7 @@
         max-height: none;
         max-width: 520px;
         margin: 0 auto;
+        transform: translateY(-0.3cm);
       }
 
       .collage-slot-1 {
@@ -613,13 +629,18 @@
         z-index: 5;
       }
 
+      /* Na telefonu zobrazit sloupce: Č. | Projekt | Rok | Typ */
       .grid-cols {
-        grid-template-columns: 38px 1.8fr 1fr 46px;
+        grid-template-columns: 36px 2fr 48px 1fr;
       }
 
       .col-typology,
-      .col-type {
+      .col-loc {
         display: none;
+      }
+
+      .col-year {
+        padding-right: 12px;
       }
 
       .accordion-info {
@@ -640,7 +661,7 @@
     <div class="maintenance-logo">ADAM HOCHMUTH</div>
     <div class="maintenance-info">
       STRÁNKY JSOU V PŘÍPRAVĚ.<br>
-      KONTAKT: INFO@ADAMHOCHMUTH.CZ
+      KONTAKT: ATELIER.HOCHMUTH@GMAIL.COM
     </div>
   </div>
 
@@ -670,7 +691,7 @@
       <div>Č.</div>
       <div>Projekt</div>
       <div class="col-typology">Typologie</div>
-      <div>Lokalita</div>
+      <div class="col-loc">Lokalita</div>
       <div class="col-year">Rok</div>
       <div class="col-type">Typ</div>
     </div>
@@ -688,22 +709,23 @@
     </div>
 
     <div class="drawer-body">
-      <div class="drawer-description">
-        Text o ateliéru doplníte zde.
-      </div>
+      <div class="drawer-description">(ING. ARCH. , ČKA 05550)</div>
 
       <div class="drawer-meta">
-        <div class="meta-label">Adresa</div>
-        <div>—</div>
+        <div class="meta-label">E-MAIL</div>
+        <div><a href="mailto:atelier.hochmuth@gmail.com">atelier.hochmuth@gmail.com</a></div>
 
-        <div class="meta-label">E-mail</div>
-        <div>—</div>
+        <div class="meta-label">TELEFON</div>
+        <div><a href="tel:+420773573233">+420 773 573 233</a></div>
 
-        <div class="meta-label">Telefon</div>
-        <div>—</div>
+        <div class="meta-label">FAKTURAČNÍ ADRESA</div>
+        <div>K Podjezdu 1444/3, 140 00 Praha 4</div>
 
         <div class="meta-label">IČO</div>
-        <div>—</div>
+        <div>04565576</div>
+
+        <div class="meta-label">DATOVÁ SCHRÁNKA</div>
+        <div>thuid7b</div>
       </div>
     </div>
   </aside>
